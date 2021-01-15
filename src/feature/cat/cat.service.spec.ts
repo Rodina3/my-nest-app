@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CatService } from './cat.service';
+import { CreateCatDto } from '../dto/create-cat.dto';
 
 describe('CatService', () => {
   let service: CatService;
@@ -24,6 +25,13 @@ describe('CatService', () => {
     const id = 123;
     expect(service.retrieveCatById(id)).toEqual(
       `This action retrieve cat with id ${id}`,
+    );
+  });
+
+  it('should create cat', () => {
+    const createCatDto: CreateCatDto = new CreateCatDto('Amy', 5, 'White');
+    expect(service.createCat(createCatDto)).toEqual(
+      `This action adds cat with name: ${createCatDto.name}, age: ${createCatDto.age} and color: ${createCatDto.color}`,
     );
   });
 });
