@@ -19,4 +19,11 @@ describe('CatService', () => {
   it('should retrieve all cats', () => {
     expect(service.retrieveCats()).toEqual('This action retrieves all cats.');
   });
+
+  it('should retrieve cat by id', () => {
+    const id = 123;
+    expect(service.retrieveCatById(id)).toEqual(
+      `This action retrieve cat with id ${id}`,
+    );
+  });
 });
