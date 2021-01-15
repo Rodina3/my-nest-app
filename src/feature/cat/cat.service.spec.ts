@@ -15,4 +15,8 @@ describe('CatService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should retrieve all cats', () => {
+    expect(service.retrieveCats()).toEqual('This action retrieves all cats.');
+  });
 });
