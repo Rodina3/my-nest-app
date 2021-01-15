@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotImplementedException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { CatService } from './cat.service';
 import { CreateCatDto } from '../dto/create-cat.dto';
 
@@ -19,5 +27,10 @@ export class CatController {
   @Post()
   createCat(@Body() createCatDto: CreateCatDto): string {
     return this.catService.createCat(createCatDto);
+  }
+
+  @Delete(':id')
+  deleteCatById(@Param('id') id: number): string {
+    throw new NotImplementedException('Not implement yet');
   }
 }
