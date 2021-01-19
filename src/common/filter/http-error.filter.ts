@@ -5,12 +5,14 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { Logger } from '../../utils/logger';
 
 @Catch(HttpException)
 export class HttpErrorException implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
+    const request = ctx.getRequest();
 
     let message: any = exception.message;
     let isDeepestMessage = false;
@@ -27,6 +29,12 @@ export class HttpErrorException implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    Logger.error(
+      `Catch http exception at ${request.method} ${request.url} ${status}`,
+    );
+
+    Logger.error('exception', JSON.stringify(exception));
 
     response.status(status);
     response.header('Content-Type', 'application/json; charset=utf-8');

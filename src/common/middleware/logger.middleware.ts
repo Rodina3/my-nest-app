@@ -1,8 +1,16 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Logger } from '../../utils/logger';
 
-@Injectable()
-export class LoggerMiddleware implements NestMiddleware {
-  use(req: any, res: any, next: () => void) {
-    next();
+export function logger(req, res, next) {
+  const statusCode = res.statusCode;
+  const logFormat = `${req.method} ${req.originalUrl} ip: ${req.ip} statusCode: ${statusCode}`;
+
+  next();
+
+  if (statusCode >= 500) {
+    Logger.error(logFormat);
+  } else if (statusCode >= 400) {
+    Logger.warn(logFormat);
+  } else {
+    Logger.log(logFormat);
   }
 }

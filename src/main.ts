@@ -4,6 +4,8 @@ import { ValidationPipe } from './common/pipe/validation.pipe';
 import { ValidationErrorFilter } from './common/filter/validation-error.filter';
 import { HttpErrorException } from './common/filter/http-error.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { logger } from './common/middleware/logger.middleware';
+import { Logger } from './utils/logger';
 
 async function initSwagger(app) {
   const options = new DocumentBuilder()
@@ -21,10 +23,13 @@ async function bootstrap() {
 
   await initSwagger(app);
 
+  app.use(logger);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ValidationErrorFilter());
   app.useGlobalFilters(new HttpErrorException());
 
-  await app.listen(3000);
+  await app.listen(3000, 'localhost', () => {
+    Logger.log('my-nest-app server has been started on localhost:3000');
+  });
 }
 bootstrap();
