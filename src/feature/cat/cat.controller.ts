@@ -10,6 +10,7 @@ import {
 import { CatService } from './cat.service';
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CatEntity } from '../entity/cat.entity';
 
 @ApiTags('cats')
 @Controller('cats')
@@ -17,17 +18,17 @@ export class CatController {
   constructor(private readonly catService: CatService) {}
 
   @Get()
-  getAllCats(): string {
+  getAllCats(): Promise<CatEntity[]> {
     return this.catService.retrieveCats();
   }
 
   @Get(':id')
-  getCatById(@Param('id') id: number): string {
+  getCatById(@Param('id') id: number): Promise<CatEntity> {
     return this.catService.retrieveCatById(id);
   }
 
   @Post()
-  createCat(@Body() createCatDto: CreateCatDto): string {
+  createCat(@Body() createCatDto: CreateCatDto): Promise<CatEntity> {
     return this.catService.createCat(createCatDto);
   }
 

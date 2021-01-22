@@ -5,7 +5,7 @@ export class createCatTable1611114721303 implements MigrationInterface {
     await queryRunner.query(
       `
           CREATE TABLE cat (
-          id  VARCHAR(10) NOT NULL PRIMARY KEY,
+          id  SERIAL PRIMARY KEY,
           name VARCHAR(20) NOT NULL,
           age INT NOT NULL,
           color VARCHAR(20) NOT NULL

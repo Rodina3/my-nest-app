@@ -1,21 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { Logger } from '../../utils/logger';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CatEntity } from '../entity/cat.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CatService {
-  retrieveCats(): string {
+  constructor(
+    @InjectRepository(CatEntity) private catRepository: Repository<CatEntity>,
+  ) {}
+
+  retrieveCats(): Promise<CatEntity[]> {
     Logger.info('retrieve all cats');
-    return 'This action retrieves all cats.';
+    return this.catRepository.find();
   }
 
-  retrieveCatById(id: number): string {
-    Logger.info(`retrieve cats: ${id}`);
-    return `This action retrieve cat with id ${id}`;
+  async retrieveCatById(id: number): Promise<CatEntity> {
+    Logger.info(`retrieve cat by id: ${id}`);
+    const cat = await this.catRepository.findOne(id);
+    if (!cat) {
+      throw new NotFoundException(`cat with id: ${id} not found`);
+    } else {
+      return cat;
+    }
   }
 
-  createCat(createCatDto: CreateCatDto): string {
-    Logger.info(`create cats: ${createCatDto.name}`);
-    return `This action adds cat with name: ${createCatDto.name}, age: ${createCatDto.age} and color: ${createCatDto.color}`;
+  createCat(createCatDto: CreateCatDto): Promise<CatEntity> {
+    Logger.info(`create cats: ${JSON.stringify(createCatDto)}`);
+    const { name, age, color } = createCatDto;
+    const createCatEntity = new CatEntity(name, age, color);
+    return this.catRepository.save(createCatEntity);
   }
 }
