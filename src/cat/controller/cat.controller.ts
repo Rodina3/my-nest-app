@@ -7,7 +7,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { CatService } from './cat.service';
+import { CatService } from '../service/cat.service';
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CatEntity } from '../entity/cat.entity';

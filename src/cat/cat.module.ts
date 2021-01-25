@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CatController } from './cat/cat.controller';
-import { CatService } from './cat/cat.service';
+import { CatController } from './controller/cat.controller';
+import { CatService } from './service/cat.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatEntity } from './entity/cat.entity';
 
