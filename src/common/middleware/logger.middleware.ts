@@ -1,4 +1,4 @@
-import { Logger } from '../../utils/logger';
+import { Logger } from '../utils/logger';
 
 export function logger(req, res, next) {
   const statusCode = res.statusCode;

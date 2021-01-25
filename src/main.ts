@@ -5,7 +5,7 @@ import { ValidationErrorFilter } from './common/filter/validation-error.filter';
 import { HttpErrorException } from './common/filter/http-error.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { logger } from './common/middleware/logger.middleware';
-import { Logger } from './utils/logger';
+import { Logger } from './common/utils/logger';
 
 async function initSwagger(app) {
   const options = new DocumentBuilder()
