@@ -1,5 +1,5 @@
 import { CatService } from './cat.service';
-import { CreateCatDto } from '../dto/create-cat.dto';
+import { CreateCatDto } from '../controller/dto/create-cat.dto';
 import { CatEntity } from '../entity/cat.entity';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
