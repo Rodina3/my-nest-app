@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CatEntity } from '../feature/entity/cat.entity';
+import { CatEntity } from '../cat/entity/cat.entity';
 
 const ENTITIES = [CatEntity];
 

@@ -9,4 +9,4 @@ import { CatEntity } from './entity/cat.entity';
   controllers: [CatController],
   providers: [CatService],
 })
-export class FeatureModule {}
+export class CatModule {}
