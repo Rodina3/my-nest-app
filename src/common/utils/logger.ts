@@ -73,7 +73,7 @@ Log4js.addLayout('my-nest-app', (logConfig: any) => {
         levelOutput = Chalk.red(levelOutput);
         break;
       case LoggerLevel.FATAL:
-        levelOutput = Chalk.hex('#DD4C35')(levelOutput);
+        levelOutput = Chalk.hex('#dd4c35')(levelOutput);
         break;
       default:
         levelOutput = Chalk.grey(levelOutput);
