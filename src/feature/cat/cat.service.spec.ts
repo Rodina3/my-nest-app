@@ -21,7 +21,6 @@ describe('CatServiceTest', () => {
       );
 
     const result = await service.retrieveCats();
-
     expect(result.length).toEqual(2);
   });
 
@@ -70,7 +69,7 @@ describe('CatServiceTest', () => {
 });
 
 function buildCatEntity(id: number): CatEntity {
-  const cat = new CatEntity('amy', 12, 'color');
+  const cat = new CatEntity('amy', 'color', 12);
   cat.id = id;
   return cat;
 }

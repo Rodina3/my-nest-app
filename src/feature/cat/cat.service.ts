@@ -29,7 +29,7 @@ export class CatService {
   createCat(createCatDto: CreateCatDto): Promise<CatEntity> {
     Logger.info(`create cats: ${JSON.stringify(createCatDto)}`);
     const { name, age, color } = createCatDto;
-    const createCatEntity = new CatEntity(name, age, color);
+    const createCatEntity = new CatEntity(name, color, age);
     return this.catRepository.save(createCatEntity);
   }
 }
