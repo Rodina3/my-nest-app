@@ -14,13 +14,14 @@ describe('CatServiceTest', () => {
   });
 
   it('should retrieve all cats when retrieveCats', async () => {
-    jest
-      .spyOn(mockRepo, 'find')
+    mockRepo.find = jest
+      .fn()
       .mockImplementation(() =>
         Promise.resolve([buildCatEntity(1), buildCatEntity(2)]),
       );
 
     const result = await service.retrieveCats();
+
     expect(result.length).toEqual(2);
   });
 
@@ -28,18 +29,19 @@ describe('CatServiceTest', () => {
     it('should retrieve cat by id given id exist in repo', async () => {
       const id = 1;
       const catEntity = buildCatEntity(id);
-      jest
-        .spyOn(mockRepo, 'findOne')
+      mockRepo.findOne = jest
+        .fn()
         .mockImplementation(() => Promise.resolve(catEntity));
 
       const result = await service.retrieveCatById(id);
+
       expect(result).toEqual(catEntity);
     });
 
     it('should throw NotFoundException given id not exist in repo', async () => {
       const id = 999;
-      jest
-        .spyOn(mockRepo, 'findOne')
+      mockRepo.findOne = jest
+        .fn()
         .mockImplementation(() => Promise.resolve(undefined));
 
       try {
@@ -58,8 +60,8 @@ describe('CatServiceTest', () => {
       catEntity.age,
       catEntity.color,
     );
-    jest
-      .spyOn(mockRepo, 'save')
+    mockRepo.save = jest
+      .fn()
       .mockImplementation(() => Promise.resolve(catEntity));
 
     const result = await service.createCat(createCatDto);
