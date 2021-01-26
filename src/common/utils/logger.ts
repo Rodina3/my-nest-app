@@ -1,6 +1,6 @@
 import * as Log4js from 'log4js';
 import * as Util from 'util';
-import * as Moment from 'moment';
+import * as Dayjs from 'dayjs';
 import * as Chalk from 'chalk';
 import * as StackTrace from 'stacktrace-js';
 import * as _ from 'lodash';
@@ -51,7 +51,7 @@ Log4js.addLayout('my-nest-app', (logConfig: any) => {
     const messageOutput: string = messageList.join(' ');
     const positionOutput: string = position ? ` [${position}]` : '';
     const typeOutput = `[${logConfig.type}] ${logEvent.pid.toString()} - `;
-    const dateOutput = `${Moment(logEvent.startTime).format(
+    const dateOutput = `${Dayjs(logEvent.startTime).format(
       'MM/DD/YYYY h:mm:ss A',
     )}`;
     const moduleOutput: string = moduleName
