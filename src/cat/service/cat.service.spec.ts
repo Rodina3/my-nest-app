@@ -8,29 +8,24 @@ describe('CatServiceTest', () => {
   let mockRepo: Repository<CatEntity>;
   let service: CatService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockRepo = new Repository<CatEntity>();
     service = new CatService(mockRepo);
   });
 
   it('should retrieve all cats when retrieveCats', async () => {
-    mockRepo.find = jest
-      .fn()
-      .mockImplementation(() =>
-        Promise.resolve([buildCatEntity(1), buildCatEntity(2)]),
-      );
+    const catEntities = [buildCatEntity(1), buildCatEntity(2)];
+    mockRepo.find = jest.fn(() => Promise.resolve(catEntities));
 
     const result = await service.retrieveCats();
-    expect(result.length).toEqual(2);
+    expect(result.length).toBe(2);
   });
 
   describe('when retrieveCatById', () => {
     it('should retrieve cat by id given id exist in repo', async () => {
       const id = 1;
       const catEntity = buildCatEntity(id);
-      mockRepo.findOne = jest
-        .fn()
-        .mockImplementation(() => Promise.resolve(catEntity));
+      mockRepo.findOne = jest.fn(() => Promise.resolve(catEntity));
 
       const result = await service.retrieveCatById(id);
 
@@ -39,10 +34,9 @@ describe('CatServiceTest', () => {
 
     it('should throw NotFoundException given id not exist in repo', async () => {
       const id = 999;
-      mockRepo.findOne = jest
-        .fn()
-        .mockImplementation(() => Promise.resolve(undefined));
+      mockRepo.findOne = jest.fn(() => Promise.resolve(undefined));
 
+      expect.assertions(2);
       try {
         await service.retrieveCatById(id);
       } catch (ex) {
@@ -59,9 +53,7 @@ describe('CatServiceTest', () => {
       catEntity.age,
       catEntity.color,
     );
-    mockRepo.save = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(catEntity));
+    mockRepo.save = jest.fn((): any => Promise.resolve(catEntity));
 
     const result = await service.createCat(createCatDto);
     expect(result).toEqual(catEntity);

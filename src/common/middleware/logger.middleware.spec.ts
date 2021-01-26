@@ -26,8 +26,8 @@ describe('Logger middleware', () => {
 
     await logger(mockRequest, mockResponse, nextFunction);
 
-    expect(nextFunction).toBeCalledTimes(1);
-    expect(errorSpy).toBeCalledWith(expectedLog);
+    expect(nextFunction).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(expectedLog);
   });
 
   it('should use Logger.warn given status code >= 400 AND < 500', async () => {
@@ -39,8 +39,8 @@ describe('Logger middleware', () => {
 
     await logger(mockRequest, mockResponse, nextFunction);
 
-    expect(nextFunction).toBeCalledTimes(1);
-    expect(warnSpy).toBeCalledWith(expectedLog);
+    expect(nextFunction).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledWith(expectedLog);
   });
 
   it('should use Logger.log given status code < 400', async () => {
@@ -52,7 +52,7 @@ describe('Logger middleware', () => {
 
     await logger(mockRequest, mockResponse, nextFunction);
 
-    expect(nextFunction).toBeCalledTimes(1);
-    expect(logSpy).toBeCalledWith(expectedLog);
+    expect(nextFunction).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(expectedLog);
   });
 });
