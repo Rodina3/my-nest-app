@@ -29,8 +29,9 @@ async function bootstrap() {
 
   app.use(logger);
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new ValidationErrorFilter());
-  app.useGlobalFilters(new HttpErrorException());
+  app.useGlobalFilters(new ValidationErrorFilter(), new HttpErrorException());
+  // Register pipes, filters, guards in here cannot inject dependencies
+  // since this is done outside the context of any module.
 
   await app.listen(appConfig.port, appConfig.host, () => {
     Logger.log(
