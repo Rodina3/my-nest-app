@@ -1,7 +1,13 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export interface Config {
-  port: number;
-  appName: string;
+  app: {
+    host: string;
+    port: number | string;
+    name: string;
+  };
+  swagger: {
+    path: string;
+  };
   database: TypeOrmModuleOptions;
 }

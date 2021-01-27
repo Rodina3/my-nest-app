@@ -6,30 +6,36 @@ import { HttpErrorException } from './common/filter/http-error.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { logger } from './common/middleware/logger.middleware';
 import { Logger } from './common/utils/logger';
+import { ConfigService } from '@nestjs/config';
 
-async function initSwagger(app) {
+async function initSwagger(app, appConfig, swaggerConfig) {
   const options = new DocumentBuilder()
-    .setTitle('my-nest-app')
-    .setDescription('The my-nest-app API documents')
+    .setTitle(appConfig.name)
+    .setDescription(`${appConfig.name} API documents`)
     .setVersion('0.0.1')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup(swaggerConfig.path, app, document);
 }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const appConfig = configService.get('app');
+  const swaggerConfig = configService.get('swagger');
 
-  await initSwagger(app);
+  await initSwagger(app, appConfig, swaggerConfig);
 
   app.use(logger);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ValidationErrorFilter());
   app.useGlobalFilters(new HttpErrorException());
 
-  await app.listen(3000, 'localhost', () => {
-    Logger.log('my-nest-app server has been started on localhost:3000');
+  await app.listen(appConfig.port, appConfig.host, () => {
+    Logger.log(
+      `${appConfig.name} server has been started on ${appConfig.host}:${appConfig.port}`,
+    );
   });
 }
 bootstrap();
