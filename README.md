@@ -52,6 +52,15 @@ $ npm run lint
 # while you can also do lint through IDE 
 ```
 
+## Git Hooks
+
+The classic [lint-staged](https://github.com/okonet/lint-staged) with [husky](https://github.com/typicode/husky) is used for Git Hooks. It is configured as:
+
+- pre-commit: lint all ts files
+- pre-push: run testing
+
+where detailed configuration can be found at `package.json`.
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
