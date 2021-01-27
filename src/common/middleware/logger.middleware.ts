@@ -1,16 +1,16 @@
 import { Logger } from '../utils/logger';
 
 export function logger(req, res, next) {
-  const statusCode = res.statusCode;
-  const logFormat = `${req.method} ${req.originalUrl} ip: ${req.ip} statusCode: ${statusCode}`;
-
   next();
 
+  const statusCode = res.statusCode;
+  const logMessage = `${req.method} ${req.originalUrl} ip: ${req.ip} statusCode: ${statusCode}`;
+
   if (statusCode >= 500) {
-    Logger.error(logFormat);
+    Logger.error(logMessage);
   } else if (statusCode >= 400) {
-    Logger.warn(logFormat);
+    Logger.warn(logMessage);
   } else {
-    Logger.log(logFormat);
+    Logger.log(logMessage);
   }
 }
