@@ -8,7 +8,7 @@ import {
 import { Logger } from '../utils/logger';
 
 @Catch(HttpException)
-export class HttpErrorException implements ExceptionFilter {
+export class HttpErrorExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

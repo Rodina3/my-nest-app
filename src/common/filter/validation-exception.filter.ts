@@ -8,7 +8,7 @@ import { ValidationException } from '../exception/validation.exception';
 import { Logger } from '../utils/logger';
 
 @Catch(ValidationException)
-export class ValidationErrorFilter implements ExceptionFilter {
+export class ValidationExceptionFilter implements ExceptionFilter {
   catch(exception: ValidationException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

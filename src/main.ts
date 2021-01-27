@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipe/validation.pipe';
-import { ValidationErrorFilter } from './common/filter/validation-error.filter';
-import { HttpErrorException } from './common/filter/http-error.filter';
+import { ValidationExceptionFilter } from './common/filter/validation-exception.filter';
+import { HttpErrorExceptionFilter } from './common/filter/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { logger } from './common/middleware/logger.middleware';
 import { Logger } from './common/utils/logger';
@@ -29,7 +29,10 @@ async function bootstrap() {
 
   app.use(logger);
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new ValidationErrorFilter(), new HttpErrorException());
+  app.useGlobalFilters(
+    new ValidationExceptionFilter(),
+    new HttpErrorExceptionFilter(),
+  );
   // Register pipes, filters, guards in here cannot inject dependencies
   // since this is done outside the context of any module.
 
