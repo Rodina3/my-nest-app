@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 import { ValidationPipe } from '../src/common/pipe/validation.pipe';
 import { ValidationExceptionFilter } from '../src/common/filter/validation-exception.filter';
-import { HttpErrorExceptionFilter } from '../src/common/filter/http-exception.filter';
+import { HttpExceptionFilter } from '../src/common/filter/http-exception.filter';
 
 describe('App e2e tests', () => {
   let app: INestApplication;
@@ -16,8 +16,10 @@ describe('App e2e tests', () => {
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
-    app.useGlobalFilters(new ValidationExceptionFilter());
-    app.useGlobalFilters(new HttpErrorExceptionFilter());
+    app.useGlobalFilters(
+      new ValidationExceptionFilter(),
+      new HttpExceptionFilter(),
+    );
     await app.init();
   });
 
