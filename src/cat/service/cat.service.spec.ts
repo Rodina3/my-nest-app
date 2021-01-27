@@ -1,5 +1,4 @@
 import { CatService } from './cat.service';
-import { CreateCatDto } from '../controller/dto/create-cat.dto';
 import { CatEntity } from '../entity/cat.entity';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
@@ -13,15 +12,17 @@ describe('CatServiceTest', () => {
     service = new CatService(mockRepo);
   });
 
-  it('should retrieve all cats when retrieveCats', async () => {
+  it('should retrieve all cats when retrieveCats() called', async () => {
     const catEntities = [buildCatEntity(1), buildCatEntity(2)];
     mockRepo.find = jest.fn(() => Promise.resolve(catEntities));
 
     const result = await service.retrieveCats();
+
+    expect(mockRepo.find).toHaveBeenCalledTimes(1);
     expect(result.length).toBe(2);
   });
 
-  describe('when retrieveCatById', () => {
+  describe('when retrieveCatById() called', () => {
     it('should retrieve cat by id given id exist in repo', async () => {
       const id = 1;
       const catEntity = buildCatEntity(id);
@@ -29,6 +30,8 @@ describe('CatServiceTest', () => {
 
       const result = await service.retrieveCatById(id);
 
+      expect(mockRepo.findOne).toHaveBeenCalledTimes(1);
+      expect(mockRepo.findOne).toHaveBeenCalledWith(id);
       expect(result).toEqual(catEntity);
     });
 
@@ -46,16 +49,14 @@ describe('CatServiceTest', () => {
     });
   });
 
-  it('should return created cat when createCat given cat', async () => {
+  it('should return added catEntity when addCat() called given catEntity', async () => {
     const catEntity = buildCatEntity(1);
-    const createCatDto: CreateCatDto = new CreateCatDto(
-      catEntity.name,
-      catEntity.age,
-      catEntity.color,
-    );
     mockRepo.save = jest.fn((): any => Promise.resolve(catEntity));
 
-    const result = await service.createCat(createCatDto);
+    const result = await service.addCat(catEntity);
+
+    expect(mockRepo.save).toHaveBeenCalledTimes(1);
+    expect(mockRepo.save).toHaveBeenCalledWith(catEntity);
     expect(result).toEqual(catEntity);
   });
 });

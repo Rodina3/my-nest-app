@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 
-export class CreateCatDto {
+export class AddCatDto {
   constructor(name: string, age: number, color: string) {
     this.name = name;
     this.age = age;
@@ -17,7 +17,7 @@ export class CreateCatDto {
 
   @ApiModelProperty({ description: 'The name of the cat' })
   @IsString()
-  @MinLength(1, {
+  @MinLength(3, {
     message: 'name is too short',
   })
   @MaxLength(10, {

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateCatDto } from '../controller/dto/create-cat.dto';
+import { AddCatDto } from '../controller/dto/add-cat.dto';
 import { Logger } from '../../common/utils/logger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CatEntity } from '../entity/cat.entity';
@@ -26,10 +26,8 @@ export class CatService {
     }
   }
 
-  createCat(createCatDto: CreateCatDto): Promise<CatEntity> {
-    Logger.info(`create cats: ${JSON.stringify(createCatDto)}`);
-    const { name, age, color } = createCatDto;
-    const createCatEntity = new CatEntity(name, color, age);
-    return this.catRepository.save(createCatEntity);
+  addCat(newCatEntity: CatEntity): Promise<CatEntity> {
+    Logger.info(`add cat: ${JSON.stringify(newCatEntity)}`);
+    return this.catRepository.save(newCatEntity);
   }
 }

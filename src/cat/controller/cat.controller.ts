@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { CatService } from '../service/cat.service';
-import { CreateCatDto } from './dto/create-cat.dto';
+import { AddCatDto } from './dto/add-cat.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CatEntity } from '../entity/cat.entity';
 
@@ -18,22 +18,24 @@ export class CatController {
   constructor(private readonly catService: CatService) {}
 
   @Get()
-  getAllCats(): Promise<CatEntity[]> {
+  retrieveAllCats(): Promise<CatEntity[]> {
     return this.catService.retrieveCats();
   }
 
   @Get(':id')
-  getCatById(@Param('id') id: number): Promise<CatEntity> {
+  retrieveCatById(@Param('id') id: number): Promise<CatEntity> {
     return this.catService.retrieveCatById(id);
   }
 
   @Post()
-  createCat(@Body() createCatDto: CreateCatDto): Promise<CatEntity> {
-    return this.catService.createCat(createCatDto);
+  addCat(@Body() addCatDto: AddCatDto): Promise<CatEntity> {
+    const { name, age, color } = addCatDto;
+    const newCatEntity = new CatEntity(name, color, age);
+    return this.catService.addCat(newCatEntity);
   }
 
   @Delete(':id')
-  deleteCatById(@Param('id') id: number): string {
+  removeCatById(@Param('id') id: number): string {
     throw new NotImplementedException('Not implement yet');
   }
 }
