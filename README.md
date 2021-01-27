@@ -56,7 +56,7 @@ $ npm run lint
 
 The classic [lint-staged](https://github.com/okonet/lint-staged) with [husky](https://github.com/typicode/husky) is used for Git Hooks. It is configured as:
 
-- pre-commit: lint all ts files
+- pre-commit: check typescript and lint all ts files
 - pre-push: run testing
 
 where detailed configuration can be found at `package.json`.
