@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AddCatDto } from '../controller/dto/add-cat.dto';
 import { Logger } from '../../common/utils/logger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CatEntity } from '../entity/cat.entity';

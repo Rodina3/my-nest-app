@@ -35,7 +35,7 @@ export class CatController {
   }
 
   @Delete(':id')
-  removeCatById(@Param('id') id: number): string {
+  removeCatById(): string {
     throw new NotImplementedException('Not implement yet');
   }
 }

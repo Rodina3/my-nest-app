@@ -15,6 +15,6 @@ export class createCatTable1611114721303 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    `DROP TABLE IF EXISTS cat`;
+    await queryRunner.query(`DROP TABLE IF EXISTS cat`);
   }
 }
