@@ -41,6 +41,17 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Code Style
+
+The classic [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) combo is used as Nest originally recommended. The configuration could be found at `.eslintrc.js` for both ESLint and Prettier as single source of truth. 
+
+```bash
+# manually lint the code base     
+$ npm run lint
+
+# while you can also do lint through IDE 
+```
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
