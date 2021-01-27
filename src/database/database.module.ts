@@ -1,24 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CatEntity } from '../cat/entity/cat.entity';
-
-const ENTITIES = [CatEntity];
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'password',
-      database: 'postgres',
-      entities: [...ENTITIES],
-      migrations: [__dirname + '/migration/{*.js,*.ts}'],
-      migrationsRun: true,
-      dropSchema: false,
-      synchronize: false,
-      logging: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) =>
+        configService.get('database'),
+      inject: [ConfigService],
     }),
   ],
 })
