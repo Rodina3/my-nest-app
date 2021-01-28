@@ -2,24 +2,22 @@ import { Client } from 'pg';
 import { testConfig } from './config/test.config';
 
 export async function createTestSchema() {
-  const client = new Client({ connectionString: testConfig.database.url });
-  try {
-    await client.connect();
-    await client.query(`
-      CREATE SCHEMA IF NOT EXISTS ${testConfig.database.schema};
-    `);
-  } finally {
-    await client.end();
-  }
+  await runQuery(`
+    CREATE SCHEMA IF NOT EXISTS ${testConfig.database.schema};
+  `);
 }
 
 export async function dropTestSchema() {
+  await runQuery(`
+    DROP SCHEMA IF EXISTS ${testConfig.database.schema} CASCADE;
+  `);
+}
+
+export async function runQuery(query: string) {
   const client = new Client({ connectionString: testConfig.database.url });
   try {
     await client.connect();
-    await client.query(`
-      DROP SCHEMA IF EXISTS ${testConfig.database.schema} CASCADE;
-    `);
+    await client.query(query);
   } finally {
     await client.end();
   }
