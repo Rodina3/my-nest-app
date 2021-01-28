@@ -7,7 +7,7 @@ import { ValidationExceptionFilter } from '../src/common/filter/validation-excep
 import { HttpExceptionFilter } from '../src/common/filter/http-exception.filter';
 import { ConfigModule } from '@nestjs/config';
 import { loadTestConfig } from './config/test.config';
-import { createTestSchema } from './utils';
+import { createTestSchema, dropTestSchema } from './utils';
 
 describe('App e2e tests', () => {
   let app: INestApplication;
@@ -33,7 +33,10 @@ describe('App e2e tests', () => {
     await app.init();
   });
 
-  afterAll(async () => await app.close());
+  afterAll(async () => {
+    await app.close();
+    await dropTestSchema();
+  });
 
   describe('GET /cats/:id', () => {
     it('should return 200 with cat', async (done) => {
