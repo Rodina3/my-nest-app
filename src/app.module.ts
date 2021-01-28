@@ -8,7 +8,7 @@ import config from './config/config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.${process.env.NODE_ENV || 'local'}.env`,
+      ignoreEnvFile: true,
       load: [config],
     }),
     CatModule,

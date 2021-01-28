@@ -6,16 +6,18 @@ const ENTITIES = [CatEntity];
 
 const createConfig: ConfigFactory = (): Config => ({
   app: {
-    name: 'my-nest-app',
-    host: 'localhost',
-    port: 3000,
+    name: process.env.APP_NAME || 'my-nest-app',
+    host: process.env.HOST || 'localhost',
+    port: process.env.PORT || 3000,
   },
   swagger: {
     path: 'api-docs',
   },
   database: {
     type: 'postgres',
-    url: process.env.DATABASE_URL,
+    url:
+      process.env.DATABASE_URL ||
+      'postgresql://postgres:password@localhost:5432/postgres',
     entities: [...ENTITIES],
     migrations: [__dirname + '/migration/{*.js,*.ts}'],
     migrationsRun: true,
