@@ -35,52 +35,52 @@ describe('App e2e tests', () => {
 
   afterAll(async () => await app.close());
 
-  it('GET /cats', () => {
-    return request(app.getHttpServer())
-      .get('/cats')
-      .expect(200)
-      .expect('This action retrieves all cats.');
+  describe('GET /cats/:id', () => {
+    it('should return 200 with cat', async (done) => {
+      const id = 1;
+      const response = await request(app.getHttpServer()).get(`/cats/${id}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        name: 'amy',
+        color: 'white',
+        age: 12,
+        id: 1,
+      });
+      done();
+    });
   });
-  //
-  // it('GET /cats/:id', async (done) => {
-  //   const id = 123;
-  //   const response = await request(app.getHttpServer()).get(`/cats/${id}`);
-  //
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.id).toBe(123);
-  //   done();
-  // });
 
-  it('DELETE /cats/:id', async (done) => {
-    const id = 123;
-    const response = await request(app.getHttpServer()).delete(`/cats/${id}`);
+  describe('DELETE /cats/:id', () => {
+    it('should return 501 with error message', async (done) => {
+      const id = 123;
+      const response = await request(app.getHttpServer()).delete(`/cats/${id}`);
 
-    expect(response.status).toBe(501);
-    expect(response.body.message).toBe(`Not implement yet`);
-    done();
+      expect(response.status).toBe(501);
+      expect(response.body.message).toBe(`Not implement yet`);
+      done();
+    });
   });
 
   describe('POST /cats', () => {
-    // it('should add successfully given valid parameters', async (done) => {
-    //   const name = 'Amy';
-    //   const age = 3;
-    //   const color = 'white';
-    //
-    //   const response = await request(app.getHttpServer())
-    //     .post('/cats')
-    //     .send({ name: 'Amy', age: 3, color: 'white' });
-    //
-    //   expect(response.status).toBe(201);
-    //   expect(response.text).toBe(
-    //     `This action adds cat with name: ${name}, age: ${age} and color: ${color}`,
-    //   );
-    //   done();
-    // });
-
-    it('should add failed given invalid parameters', async (done) => {
+    it('should return 201 with cat given valid parameters', async (done) => {
+      const validData = { name: 'Amy', age: 3, color: 'white' };
       const response = await request(app.getHttpServer())
         .post('/cats')
-        .send({ name: '', age: 100, color: 123 });
+        .send(validData);
+
+      expect(response.status).toBe(201);
+      expect(response.body.name).toBe('Amy');
+      expect(response.body.age).toBe(3);
+      expect(response.body.color).toBe('white');
+      done();
+    });
+
+    it('should return 400 with error message given invalid parameters', async (done) => {
+      const invalidData = { name: '', age: 100, color: 123 };
+      const response = await request(app.getHttpServer())
+        .post('/cats')
+        .send(invalidData);
 
       expect(response.status).toBe(400);
       expect(response.body).toEqual({
@@ -103,4 +103,14 @@ describe('App e2e tests', () => {
       done();
     });
   });
+
+  // describe('GET /cats', () => {
+  //   it('should return 200 with cat list', async (done) => {
+  //     const result = await request(app.getHttpServer()).get('/cats');
+  //
+  //     expect(result.status).toBe(200);
+  //     expect(result.body.length).toBe(3);
+  //     done();
+  //   });
+  // });
 });
