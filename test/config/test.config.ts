@@ -1,9 +1,8 @@
-import { Config } from './config.interface';
-import { CatEntity } from '../cat/entity/cat.entity';
+import { ConfigFactory } from '@nestjs/config/dist/interfaces';
+import { Config } from '../../dist/config/config.interface';
+import { ENTITIES } from '../../src/config/default.config';
 
-export const ENTITIES = [CatEntity];
-
-export const defaultConfig: Config = {
+export const loadTestConfig: ConfigFactory = (): Config => ({
   app: {
     name: 'my-nest-app',
     host: 'localhost',
@@ -20,4 +19,4 @@ export const defaultConfig: Config = {
     migrationsRun: true,
     logging: true,
   },
-};
+});

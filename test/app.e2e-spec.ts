@@ -5,13 +5,21 @@ import { AppModule } from '../src/app.module';
 import { ValidationPipe } from '../src/common/pipe/validation.pipe';
 import { ValidationExceptionFilter } from '../src/common/filter/validation-exception.filter';
 import { HttpExceptionFilter } from '../src/common/filter/http-exception.filter';
+import { ConfigModule } from '@nestjs/config';
+import { loadTestConfig } from './config/test.config';
 
 describe('App e2e tests', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [loadTestConfig],
+        }),
+        AppModule,
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -25,12 +33,12 @@ describe('App e2e tests', () => {
 
   afterAll(async () => await app.close());
 
-  // it('GET /cats', () => {
-  //   return request(app.getHttpServer())
-  //     .get('/cats')
-  //     .expect(200)
-  //     .expect('This action retrieves all cats.');
-  // });
+  it('GET /cats', () => {
+    return request(app.getHttpServer())
+      .get('/cats')
+      .expect(200)
+      .expect('This action retrieves all cats.');
+  });
   //
   // it('GET /cats/:id', async (done) => {
   //   const id = 123;
