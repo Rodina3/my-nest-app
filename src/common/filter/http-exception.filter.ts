@@ -4,11 +4,13 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
-import { Logger } from '../utils/logger';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger('HttpExceptionFilter');
+
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
@@ -22,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     const errorResponse = {
-      message: message || '请求失败',
+      message: message || 'Request Failed',
     };
 
     const status =
@@ -30,11 +32,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    Logger.error(
+    this.logger.error(
       `Catch http exception at ${request.method} ${request.url} ${status}`,
     );
 
-    Logger.error('exception', JSON.stringify(exception));
+    this.logger.error('Exception: ', JSON.stringify(exception));
 
     response.status(status);
     response.header('Content-Type', 'application/json; charset=utf-8');

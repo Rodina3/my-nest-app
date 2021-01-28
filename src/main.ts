@@ -4,8 +4,6 @@ import { ValidationPipe } from './common/pipe/validation.pipe';
 import { ValidationExceptionFilter } from './common/filter/validation-exception.filter';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { logger } from './common/middleware/logger.middleware';
-import { Logger } from './common/utils/logger';
 import { ConfigService } from '@nestjs/config';
 
 async function initSwagger(app, appConfig, swaggerConfig) {
@@ -20,14 +18,16 @@ async function initSwagger(app, appConfig, swaggerConfig) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // Further customize logger as documentation at https://docs.nestjs.com/techniques/logger
+    logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+  });
   const configService = app.get(ConfigService);
   const appConfig = configService.get('app');
   const swaggerConfig = configService.get('swagger');
 
   await initSwagger(app, appConfig, swaggerConfig);
 
-  app.use(logger);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(
     new ValidationExceptionFilter(),
@@ -36,10 +36,6 @@ async function bootstrap() {
   // Register pipes, filters, guards in here cannot inject dependencies
   // since this is done outside the context of any module.
 
-  await app.listen(appConfig.port, appConfig.host, () => {
-    Logger.log(
-      `${appConfig.name} server has been started on ${appConfig.host}:${appConfig.port}`,
-    );
-  });
+  await app.listen(appConfig.port, appConfig.host);
 }
 bootstrap();

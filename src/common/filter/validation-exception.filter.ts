@@ -3,21 +3,23 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { ValidationException } from '../exception/validation.exception';
-import { Logger } from '../utils/logger';
 
 @Catch(ValidationException)
 export class ValidationExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger('ValidationExceptionFilter');
+
   catch(exception: ValidationException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
-    Logger.error(
+    this.logger.error(
       `Catch validation exception at ${request.method} ${request.url}`,
     );
 
-    Logger.error('exception', JSON.stringify(exception));
+    this.logger.error('Exception: ', JSON.stringify(exception));
 
     const errorResponse = {
       message: exception.message,
