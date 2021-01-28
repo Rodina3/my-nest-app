@@ -7,11 +7,13 @@ import { ValidationExceptionFilter } from '../src/common/filter/validation-excep
 import { HttpExceptionFilter } from '../src/common/filter/http-exception.filter';
 import { ConfigModule } from '@nestjs/config';
 import { loadTestConfig } from './config/test.config';
+import { createTestSchema } from './utils';
 
 describe('App e2e tests', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+    await createTestSchema();
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
