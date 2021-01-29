@@ -1,12 +1,6 @@
 import { Client } from 'pg';
 import { testConfig } from '../config/test.config';
 
-export async function createDbClient(): Client {
-  const client = new Client({ connectionString: testConfig.database.url });
-  await client.connect();
-  return client;
-}
-
 export async function createTestSchema(client: Client) {
   await client.query(`
       CREATE SCHEMA IF NOT EXISTS ${testConfig.database.schema}`);

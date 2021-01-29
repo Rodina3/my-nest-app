@@ -6,10 +6,9 @@ import { ValidationPipe } from '../src/common/pipe/validation.pipe';
 import { ValidationExceptionFilter } from '../src/common/filter/validation-exception.filter';
 import { HttpExceptionFilter } from '../src/common/filter/http-exception.filter';
 import { ConfigModule } from '@nestjs/config';
-import { loadTestConfig } from './config/test.config';
+import { loadTestConfig, testConfig } from './config/test.config';
 import {
   cleanDataInCatTable,
-  createDbClient,
   createTestSchema,
   dropTestSchema,
   initDataInCatTable,
@@ -21,8 +20,10 @@ describe('App e2e tests', () => {
   let dbClient: Client;
 
   beforeAll(async () => {
-    dbClient = await createDbClient();
+    dbClient = new Client({ connectionString: testConfig.database.url });
+    await dbClient.connect();
     await createTestSchema(dbClient);
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
@@ -50,6 +51,7 @@ describe('App e2e tests', () => {
   afterAll(async () => {
     await app.close();
     await dropTestSchema(dbClient);
+    await dbClient.end();
   });
 
   describe('GET /cats/:id', () => {
