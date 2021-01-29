@@ -5,6 +5,7 @@ import { ValidationException } from '../exception/validation.exception';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   async transform(value: any, metadata: ArgumentMetadata) {
     const { metatype } = metadata;
     if (!metadata || !this.toValidate(metatype)) {

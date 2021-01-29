@@ -16,6 +16,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     let message: any = exception.message;
     let isDeepestMessage = false;
     while (!isDeepestMessage) {
