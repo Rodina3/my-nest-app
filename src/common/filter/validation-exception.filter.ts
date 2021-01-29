@@ -15,18 +15,22 @@ export class ValidationExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
+
+    const status = HttpStatus.BAD_REQUEST;
     this.logger.error(
-      `Catch validation exception at ${request.method} ${request.url}`,
+      `ValidationException: ${request.method} ${decodeURI(
+        request.url,
+      )} ${status}`,
     );
 
-    this.logger.error('Exception: ', JSON.stringify(exception));
+    this.logger.error(`Exception details: ${JSON.stringify(exception)}`);
 
     const errorResponse = {
       message: exception.message,
       details: exception.errors,
     };
 
-    response.status(HttpStatus.BAD_REQUEST);
+    response.status(status);
     response.header('Content-Type', 'application/json; charset=utf-8');
     response.send(errorResponse);
   }
