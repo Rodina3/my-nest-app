@@ -11,12 +11,12 @@ export class CatService {
 
   private readonly logger = new Logger('CatService');
 
-  retrieveCats(): Promise<CatEntity[]> {
+  retrieveCats() {
     this.logger.log('retrieve all cats');
     return this.catRepository.find();
   }
 
-  async retrieveCatById(id: number): Promise<CatEntity> {
+  async retrieveCatById(id: number) {
     this.logger.log(`retrieve cat by id: ${id}`);
     const cat = await this.catRepository.findOne(id);
     if (!cat) {
@@ -26,7 +26,7 @@ export class CatService {
     }
   }
 
-  addCat(newCatEntity: CatEntity): Promise<CatEntity> {
+  addCat(newCatEntity: CatEntity) {
     this.logger.log(`add cat: ${JSON.stringify(newCatEntity)}`);
     return this.catRepository.save(newCatEntity);
   }

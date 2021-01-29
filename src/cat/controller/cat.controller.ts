@@ -18,24 +18,24 @@ export class CatController {
   constructor(private readonly catService: CatService) {}
 
   @Get()
-  retrieveAllCats(): Promise<CatEntity[]> {
+  retrieveAllCats() {
     return this.catService.retrieveCats();
   }
 
   @Get(':id')
-  retrieveCatById(@Param('id') id: number): Promise<CatEntity> {
+  retrieveCatById(@Param('id') id: number) {
     return this.catService.retrieveCatById(id);
   }
 
   @Post()
-  addCat(@Body() addCatDto: AddCatDto): Promise<CatEntity> {
+  addCat(@Body() addCatDto: AddCatDto) {
     const { name, age, color } = addCatDto;
     const newCatEntity = new CatEntity(name, color, age);
     return this.catService.addCat(newCatEntity);
   }
 
   @Delete(':id')
-  removeCatById(): string {
+  removeCatById() {
     throw new NotImplementedException('Not implement yet');
   }
 }
