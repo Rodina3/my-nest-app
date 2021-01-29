@@ -16,6 +16,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
+    if (request.url.toString().includes('/api-docs')) {
+      response.status(HttpStatus.OK);
+      response.end();
+      return;
+    }
+
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     let message: any = exception.message;
     let isDeepestMessage = false;
@@ -34,10 +40,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     this.logger.error(
-      `Catch http exception at ${request.method} ${request.url} ${status}`,
+      `HttpException: ${request.method} ${decodeURI(request.url)} ${status}`,
     );
 
-    this.logger.error('Exception: ', JSON.stringify(exception));
+    this.logger.error(`Exception details: ${JSON.stringify(exception)}`);
 
     response.status(status);
     response.header('Content-Type', 'application/json; charset=utf-8');
