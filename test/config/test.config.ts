@@ -15,7 +15,6 @@ export const testConfig = {
     type: 'postgres',
     url: 'postgresql://postgres:password@localhost:5432/postgres',
     schema: 'test',
-    dropSchema: true,
     entities: [...ENTITIES],
     migrations: [__dirname + '/migration/{*.js,*.ts}'],
     migrationsRun: true,

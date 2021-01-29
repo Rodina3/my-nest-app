@@ -7,13 +7,22 @@ import { ValidationExceptionFilter } from '../src/common/filter/validation-excep
 import { HttpExceptionFilter } from '../src/common/filter/http-exception.filter';
 import { ConfigModule } from '@nestjs/config';
 import { loadTestConfig } from './config/test.config';
-import { createTestSchema, dropTestSchema } from './utils';
+import {
+  cleanDataInCatTable,
+  createDbClient,
+  createTestSchema,
+  dropTestSchema,
+  initDataInCatTable,
+} from './test-helper/utils';
+import { Client } from 'pg';
 
 describe('App e2e tests', () => {
   let app: INestApplication;
+  let dbClient: Client;
 
   beforeAll(async () => {
-    await createTestSchema();
+    dbClient = await createDbClient();
+    await createTestSchema(dbClient);
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
@@ -30,12 +39,17 @@ describe('App e2e tests', () => {
       new ValidationExceptionFilter(),
       new HttpExceptionFilter(),
     );
+
     await app.init();
   });
 
+  beforeEach(async () => await initDataInCatTable(dbClient));
+
+  afterEach(async () => await cleanDataInCatTable(dbClient));
+
   afterAll(async () => {
     await app.close();
-    await dropTestSchema();
+    await dropTestSchema(dbClient);
   });
 
   describe('GET /cats/:id', () => {
@@ -107,13 +121,19 @@ describe('App e2e tests', () => {
     });
   });
 
-  // describe('GET /cats', () => {
-  //   it('should return 200 with cat list', async (done) => {
-  //     const result = await request(app.getHttpServer()).get('/cats');
-  //
-  //     expect(result.status).toBe(200);
-  //     expect(result.body.length).toBe(3);
-  //     done();
-  //   });
-  // });
+  describe('GET /cats', () => {
+    it('should return 200 with cat list', async (done) => {
+      const result = await request(app.getHttpServer()).get('/cats');
+
+      expect(result.status).toBe(200);
+      expect(result.body.length).toBe(4);
+      expect(result.body).toEqual([
+        { age: 12, color: 'white', id: 1, name: 'amy' },
+        { age: 3, color: 'black', id: 2, name: 'bob' },
+        { age: 5, color: 'orange', id: 3, name: 'cindy' },
+        { age: 18, color: 'yellow', id: 4, name: 'david' },
+      ]);
+      done();
+    });
+  });
 });
