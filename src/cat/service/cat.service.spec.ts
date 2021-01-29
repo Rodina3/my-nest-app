@@ -1,5 +1,5 @@
 import { CatService } from './cat.service';
-import { CatEntity } from '../entity/cat.entity';
+import { CatEntity } from './entity/cat.entity';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 

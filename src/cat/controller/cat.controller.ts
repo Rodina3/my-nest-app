@@ -10,7 +10,7 @@ import {
 import { CatService } from '../service/cat.service';
 import { AddCatDto } from './dto/add-cat.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { CatEntity } from '../entity/cat.entity';
+import { CatEntity } from '../service/entity/cat.entity';
 
 @ApiTags('cats')
 @Controller('cats')

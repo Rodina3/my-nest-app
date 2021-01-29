@@ -1,5 +1,5 @@
 import { Config } from './config.interface';
-import { CatEntity } from '../cat/entity/cat.entity';
+import { CatEntity } from '../cat/service/entity/cat.entity';
 
 export const ENTITIES = [CatEntity];
 
